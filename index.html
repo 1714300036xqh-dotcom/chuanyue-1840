@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>穿越 1840 · 沉浸式历史课堂</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ 封面 ============ -->
+  <section class="screen cover on" id="cover">
+    <div class="cover-bg"></div>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+    <div class="cover-inner">
+      <div class="cover-kicker">初中历史 · 中国近代史 1840—1901</div>
+      <h1>穿越 <span class="num">1840</span></h1>
+      <div class="cover-sub">沉 浸 式 历 史 课 堂</div>
+      <div class="cover-line"></div>
+      <p class="cover-desc">你不是在背年份。<br>
+        你站在虎门的销烟池边，坐在南京江面的谈判桌前，<br>
+        在黄海的炮位上，看一个天朝如何被撞开大门。</p>
+      <button class="btn-enter" id="btnEnter">进入课堂 <span>全屏演示</span></button>
+    </div>
+    <div class="cover-seal">近代<br>一课</div>
+    <div class="cover-foot">点击任意处开始 · 按 F 键全屏投影</div>
+  </section>
+
+  <!-- ============ 地图页 ============ -->
+  <section class="screen map-screen" id="mapScreen">
+    <header class="hud-top">
+      <div class="left"><span class="dotmark"></span><span>单元导读</span><span class="sep" style="width:1px;height:12px;background:rgba(201,166,104,.3)"></span><span>民族危机与救亡图存</span></div>
+      <div class="right">
+        <span>知识卡 <b class="cardcount" id="mapCardCount">0 / 12</b></span>
+        <span class="sep" style="width:1px;height:12px;background:rgba(201,166,104,.3)"></span>
+        <span id="mapDoneText">已亲历 0 / 6 幕</span>
+      </div>
+    </header>
+
+    <div class="map-wrap">
+      <div class="map-svg-box">
+        <div class="map-rule"></div>
+        <span class="map-corner tl"></span><span class="map-corner tr"></span>
+        <span class="map-corner bl"></span><span class="map-corner br"></span>
+        <svg id="chinaMap" viewBox="0 0 1000 582" preserveAspectRatio="xMidYMid meet"></svg>
+        <div id="pinLayer"></div>
+        <div class="map-inset" id="mapInset"></div>
+      </div>
+      <div class="map-legend">
+        <b>底图</b> 现代中国政区（示意）· 用于定位历史事件发生地<br>
+        <b>提示</b> 点击地图上的朱色光点，进入对应的一幕
+      </div>
+    </div>
+
+    <aside class="chapter-panel">
+      <div class="panel-kicker">CHAPTER MAP</div>
+      <div class="panel-title">六幕 · 从天朝到危局<span>1840 年鸦片战争 — 1901 年《辛丑条约》前的中国</span></div>
+      <div class="chapter-list" id="chapterList"></div>
+    </aside>
+
+    <footer class="timeline">
+      <div class="tl-head"><b>时间轴</b><span>1839 — 1901</span></div>
+      <div class="tl-track" id="tlTrack"></div>
+    </footer>
+  </section>
+
+  <!-- ============ 场景页 ============ -->
+  <section class="screen stage" id="stage">
+    <div class="bg-layer" id="bgLayer">
+      <div class="parallax" id="parallax">
+        <div class="bg-stack">
+          <img class="bg-img" id="bgA" alt="">
+          <img class="bg-img" id="bgB" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="stage-vignette"></div>
+    <div class="stage-grain"></div>
+
+    <div class="scene-hud">
+      <div class="blk">
+        <span id="hudChapter">第一幕</span><span class="sep"></span>
+        <span id="hudPlace">广东 · 虎门</span>
+      </div>
+      <div class="tools">
+        <span class="caps" id="hudCaps"></span>
+        <button id="btnReplay">重播本幕</button>
+        <button id="btnSound">音效 开</button>
+        <button id="btnMap">返回地图</button>
+      </div>
+    </div>
+
+    <div class="scene-title">
+      <div class="yr" id="sceneYear">1839</div>
+      <div class="nm" id="sceneName">虎门销烟</div>
+      <div class="pl" id="scenePlace">广东 · 虎门</div>
+    </div>
+
+    <div class="persona" id="personaCard">
+      <div class="who" id="personaWho"></div>
+      <div class="role" id="personaRole"></div>
+      <div class="say" id="personaSay"></div>
+    </div>
+
+    <div class="subtitle">
+      <div class="sub-inner">
+        <div class="sub-text" id="subText"></div>
+        <div class="sub-meta" id="subMeta"></div>
+      </div>
+    </div>
+
+    <div class="continue-hint" id="continueHint"><span>点击继续</span><i class="arrow"></i></div>
+
+    <div class="cards-tray" id="cardsTray"></div>
+
+    <div class="scene-foot">
+      <span class="left" id="footLeft">第一幕 / 共六幕</span>
+      <div class="bar"><i id="progressBar" style="width:0"></i></div>
+      <div class="right"><span class="kbd">空格</span>继续 <span class="kbd">Esc</span>返回</div>
+    </div>
+
+    <div class="task-wrap" id="taskWrap">
+      <div class="task-card" id="taskCard"></div>
+    </div>
+
+    <div class="card-modal" id="cardModal">
+      <div class="card-paper" id="cardPaper"></div>
+    </div>
+  </section>
+
+  <!-- ============ 结课页 ============ -->
+  <section class="screen finale" id="finale">
+    <div class="finale-bg"></div>
+    <div class="grain"></div>
+    <div class="finale-inner">
+      <div class="f-kicker">1895 · 最后的课堂</div>
+      <div class="f-title">两张条约，一个答案</div>
+      <p class="f-sub">从 1842 到 1895，五十三年的时间里，中国签下了两份改变命运的条约。把它们放在一起看，你才会明白"半殖民地化程度大大加深"这句话，究竟有多重。</p>
+      <div class="f-rule"></div>
+
+      <div class="cmp">
+        <table>
+          <thead>
+            <tr><th style="width:14%">比较项</th><th>1842 《南京条约》</th><th>1895 《马关条约》</th></tr>
+          </thead>
+          <tbody id="cmpBody"></tbody>
+        </table>
+      </div>
+      <div class="reflect" style="text-align:right;margin-top:1.6vh">
+        <button class="btn-next" id="btnReveal">逐行揭示对比 ▸</button>
+      </div>
+
+      <div class="reflect">
+        <h3>如果你活在 1895 年，你会怎么救这个国家？</h3>
+        <p>这不是一道有标准答案的题。选择一条路，看看历史上真的走上这条路的人，后来怎样了。</p>
+        <div class="paths">
+          <button class="path" data-path="0"><div class="py">变法维新</div><div class="pd">上书皇帝，改制变法<br>——康有为、梁启超</div></button>
+          <button class="path" data-path="1"><div class="py">革命推翻</div><div class="pd">推翻清政府，建立共和<br>——孙中山</div></button>
+          <button class="path" data-path="2"><div class="py">实业救国</div><div class="pd">办厂开矿，以商战救国<br>——张謇</div></button>
+          <button class="path" data-path="3"><div class="py">继续洋务</div><div class="pd">再买船炮，练新军<br>——李鸿章</div></button>
+        </div>
+        <div class="path-result" id="pathResult">
+          <div class="pr-t" id="prTitle"></div>
+          <div class="pr-b" id="prBody"></div>
+        </div>
+      </div>
+
+      <div class="report">
+        <div class="r-left">
+          <div class="rk">课堂记录</div>
+          <div class="rv">已亲历 <em id="repScenes">0</em> / 6 幕 · 收录知识卡 <em id="repCards">0</em> / 12 张</div>
+        </div>
+        <div class="r-right">
+          <button id="btnCards">知识卡回顾</button>
+          <button id="btnBackMap">回到地图</button>
+          <button id="btnReset">重置本课</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="curtain" id="curtain">
+    <div class="ct"><div class="y" id="curtainYear"></div><div class="n" id="curtainName"></div><div class="l"></div></div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <!-- 场景图静态引用：供发布打包与离线缓存 -->
+  <div id="assetPreload" aria-hidden="true" style="position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;">
+    <img src="assets/img/s01_humen.jpg" alt="">
+    <img src="assets/img/s02_fort.jpg" alt="">
+    <img src="assets/img/s03_treaty.jpg" alt="">
+    <img src="assets/img/s04_yuanmingyuan.jpg" alt="">
+    <img src="assets/img/s05_jintian.jpg" alt="">
+    <img src="assets/img/s06_tianjing.jpg" alt="">
+    <img src="assets/img/s07_haizhan.jpg" alt="">
+    <img src="assets/img/s08_jiangnan.jpg" alt="">
+    <img src="assets/img/s09_chuanzheng.jpg" alt="">
+    <img src="assets/img/s10_study.jpg" alt="">
+  </div>
+
+</div>
+
+<script src="assets/map-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
